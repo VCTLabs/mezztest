@@ -37,10 +37,8 @@ First things first
 
 For debian/Ubuntu, follow the above guide, simplifying as follows::
 
- $ sudo apt-get install build-essential python-setuptools python-dev \
-   python-software-properties
- $ sudo apt-get install libtiff4-dev libjpeg8-dev zlib1g-dev libpq-dev \
-   libfreetype6-dev liblcms1-dev libwebp-dev
+ $ sudo apt-get install build-essential python-setuptools python-dev python-software-properties
+ $ sudo apt-get install libtiff4-dev libjpeg8-dev zlib1g-dev libpq-dev libfreetype6-dev liblcms1-dev libwebp-dev
  $ sudo apt-get install python-virtualenv virtualenvwrapper
  $ sudo easy_install pip (if python-pip is not already installed)
 
@@ -60,7 +58,7 @@ Enter the postgres command shell::
 
  $ sudo -u postgres psql postgres
 
-You're now in the PG shell (not the prompt below) where you can view
+You're now in the PG shell (note the prompt below) where you can view
 the base help commands::
 
  postgres=# help
@@ -81,13 +79,13 @@ happy, using the $USER you are logged in as::
 
  sudo -u postgres createuser --superuser $USER
  sudo -u postgres psql
- postgres=# \password   # [enter your username]
+ postgres=# \password <username_from_above>
  Enter new password: 
  Enter it again: 
  \q 
  createdb $USER;
 
-More info can be found here:
+More postgres info can be found here:
 
 * https://help.ubuntu.com/community/PostgreSQL
 * http://www.postgresql.org/docs/
@@ -109,22 +107,23 @@ If we adopt the above, we can create a new db for mezzanine to use::
 Setup your virtualenv
 ---------------------
 
-Now we switch to the virtualenv for the rest of the installs, but
-first we have to create one::
+Now we switch to the virtualenv for the rest of the installs, but first
+we have to create one::
 
  $ mkvirtualenv mezztest
 
 Best to log out and log back in again so virtualenv can create its initial
-config. Notice your command prompt has changed; see the above links for
+config.  Notice your command prompt has changed; see the above links for
 more info on how to use virtualenv.  Test the following two commands to
 make sure they work properly::
 
  $ deactivate
  $ workon mezztest
 
-Make sure you cd into your virtual environment, then continue::
+Make sure you activate and cd into your virtual environment, then continue::
 
- $ cdvirtualenv
+ $ workon mezztest
+ $ cdvirtualenv  # or use the actual path
  $ pip install south django-compressor psycopg2
  $ pip install mezzanine
  $ pip freeze > requirements.txt
@@ -143,11 +142,10 @@ or::
 
  $ git clone https://github.com/VCTLabs/mezztest.git project
 
-For now we keep the dirname "project" as the test mezzanine project;
+For now we retain the dirname "project" as the test mezzanine project;
 the layout of the base project directory is fairly obvious::
 
- $ cd project
- $ ls
+ $ ls project/
  deploy       __init__.pyc        manage.py         settings.pyc  urls.pyc
  fabfile.py   local_settings.py   requirements.txt  static        wsgi.py
  __init__.py  local_settings.pyc  settings.py       urls.py
@@ -162,7 +160,8 @@ password you created earlier.  Also make sure the main postgres config
 file is listening on the right interface and has the "port" setting
 set correctly::
 
- $ nano -w local_settings.py
+ $ cd project/
+ $ nano -w local_settings.py  # see below and paste basic content
  $ sudo nano -w /etc/postgresql/9.1/main/postgresql.conf
 
 In the second file above, make sure it has something like this::
