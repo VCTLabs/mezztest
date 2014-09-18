@@ -210,6 +210,35 @@ Web interface Admin login::
 
 Surprising, I know...
 
+Sample local_settings.py
+------------------------
+
+For "security" reasons, the default .gitignore contains local_settings.py,
+most likely so it doesn't get included in a (possibly public) git repo.
+AFAIK, it's not strictly required, and it's simple to create one in your
+favorite editor, using the above examples::
+
+ DEBUG = True
+ 
+ DATABASES = {
+     "default": {
+         # Ends with "postgresql_psycopg2", "mysql", "sqlite3" or "oracle".
+         "ENGINE": "django.db.backends.postgresql_psycopg2",
+         # DB name or path to database file if using sqlite3.
+         "NAME": "hamlet",
+         # Not used with sqlite3.
+         "USER": "user",  # Use your actual username.
+         # Not used with sqlite3.
+         "PASSWORD": "changethispassword",
+         # Set to empty string for localhost. Not used with sqlite3.
+         "HOST": "localhost",
+         # Set to empty string for default. Not used with sqlite3.
+         "PORT": "5432",
+     }
+ }
+
+Set the db user/password to match your local setup.
+
 Example Mezzanine Development Workflow
 --------------------------------------
 
